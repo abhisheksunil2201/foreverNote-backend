@@ -6,6 +6,7 @@ const {
   validateRegisterInput,
   validateLoginInput,
 } = require("../../utils/validators");
+const { SECRET_KEY } = require("../../config");
 
 function generateToken(user) {
   return jwt.sign(
@@ -14,7 +15,7 @@ function generateToken(user) {
       email: user.email,
       username: user.username,
     },
-    process.env.SECRET_KEY,
+    SECRET_KEY,
     { expiresIn: "10h" }
   );
 }
@@ -32,8 +33,9 @@ module.exports = {
       if (!user) {
         throw new UserInputError("User not found", { errors });
       }
-      const match = bcrypt.compare(password, user.password);
+      const match = await bcrypt.compare(password, user.password);
       if (!match) {
+        errors.general = "Wrong credentials";
         throw new UserInputError("Wrong credentials", { errors });
       }
 
