@@ -9,7 +9,7 @@ const resolvers = require("./graphql/resolvers");
 
 const pubsub = new PubSub();
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4000;
 
 const startApolloServer = async () => {
   const app = express();
